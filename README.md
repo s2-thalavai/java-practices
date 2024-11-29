@@ -9,7 +9,8 @@
 	The clean subcommand removes previous artifacts in the target directory, such as the previous stale JAR file
 
 
-    ![alt text](./assets/image.png)
+![alt text](./assets/image.png)
+
     
 
 ## execute the JAR file by running:
