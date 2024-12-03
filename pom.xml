@@ -19,12 +19,12 @@
 		</license>
 	</licenses>
 
-<parent>
+	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.12</version>
 	</parent>
-	
+
 	<properties>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -82,7 +82,8 @@
 	</properties>
 
 	<modules>
-		<module>00-big-o-notation</module>
+		<module>01-java-7</module>
+		<module>02-java-8</module>
 	</modules>
 
 	<build>
