@@ -12,6 +12,19 @@
 	<name>Java Practices</name>
 	<description>Java Maven Multi Module Project for Java Practices</description>
 
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.5.12</version>
+	</parent>
+	
 	<properties>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -30,6 +43,7 @@
 		<mysql.connector.version>5.1.46</mysql.connector.version>
 		<h2.version>1.4.195</h2.version>
 		<postgresql.version>42.2.2</postgresql.version>
+		<elasticsearch.version>7.5.2</elasticsearch.version>
 
 		<!-- Lombok -->
 		<lombok.version>1.18.8</lombok.version>
