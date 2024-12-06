@@ -38,7 +38,7 @@
 	The clean subcommand removes previous artifacts in the target directory, such as the previous stale JAR file
 
 ### Screenshots
-	
+
  ![alt text](./assets/image.png)
 
 
