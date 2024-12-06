@@ -1,5 +1,9 @@
 # java-practices
 
+## roadmap
+
+![alt text](java_page-0001.jpg)
+
 ## Java Versions and Features
 
 | Version           | Date     | JEPs | Features                                                                                      |
