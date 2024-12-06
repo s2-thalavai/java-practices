@@ -6,7 +6,7 @@
 
 ## Java Versions and Features
 
-| Version           | Date     | JEPs | Features                                                                                      |
+| Version           | Date     | JEPs | Features                                                                                        |
 |-----------------  |----------|------|-------------------------------------------------------------------------------------------------|
 | Java 1.0          | Jan 1996 |      | OS Independant Programming language, Java Virtual Machine                                       |
 | J2SE 5.0          | Sep 2004 |      | Enhanced For Loop, Generics, Enums, Autoboxing                                                  |
@@ -32,15 +32,15 @@
 ## Compiling and Packaging Our JAR File:
 
 	
-	    mvn clean package
+	mvn clean package
 	
 	
 	The clean subcommand removes previous artifacts in the target directory, such as the previous stale JAR file
 
+### Screenshots
+	
+ ![alt text](./assets/image.png)
 
-![alt text](./assets/image.png)
-
-    
 
 ## execute the JAR file by running:
 
