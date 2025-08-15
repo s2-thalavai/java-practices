@@ -1,3 +1,47 @@
+/*
+
+🧩 Primitive vs Wrapper Types in Java
+
+		Feature					Primitive Type					Wrapper Class
+
+		Definition				Basic built-in data types		Object representation of primitives
+		Stored in				Stack memory					Heap memory
+		Nullability				Cannot be null					Can be null
+		Default Values			e.g., int → 0					e.g., Integer → null
+		Use in Collections		❌ Not allowed					✅ Required (e.g., List<Integer>)
+		Autoboxing/Unboxing		❌ Manual conversion needed		✅ Automatic conversion supported
+		Performance	Faster, 	lightweight	Slightly 			slower (object overhead)
+		Methods Available		None							Rich API (e.g., Integer.parseInt())
+
+
+🔧 Examples
+
+
+When to Use What?
+
+	Use primitives for performance-critical code and simple calculations.
+
+	Use wrappers when working with:
+
+		Collections (List, Map, etc.)
+
+		Generics
+
+		APIs that expect objects
+
+		Nullable values
+		
+
+🔄 Autoboxing & Unboxing
+
+	Java automatically converts between primitives and wrappers:
+
+	List<Integer> ages = new ArrayList<>();
+	ages.add(25); // Autoboxing: int → Integer
+
+	int age = ages.get(0); // Unboxing: Integer → int
+
+*/
 import java.util.List;
 import java.util.Objects;
 import java.math.BigDecimal;
@@ -20,11 +64,11 @@ public class _02_print_diff_type_values {
         System.out.println("Available: " + isAvailable);
 
 		// Wrapper Classes
-        Integer count = Integer.valueOf(100);
-        Double temperature = Double.valueOf(36.6);
+        Integer countObj = Integer.valueOf(100);
+        Double temperatureObj = Double.valueOf(36.6);
 
-        System.out.println("Count: " + count);
-        System.out.println("Temperature: " + temperature);
+        System.out.println("Count: " + countObj);
+        System.out.println("Temperature: " + temperatureObj);
 
 		// Strings
         String message = "Hello, Java!";
@@ -50,7 +94,7 @@ public class _02_print_diff_type_values {
 		LineItem firstItem = myInvoice.getLineItems().get(0);
 		System.out.printf("id: %s, category: %s%n", firstItem.getId(), firstItem.getDescription());
 		
-		List<Invoice> invoiceList = new ArrayList();
+		List<Invoice> invoiceList = new ArrayList<>();
 		invoiceList.add(myInvoice);
 		invoiceList.add(myInvoice1);
 		
