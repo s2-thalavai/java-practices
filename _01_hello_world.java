@@ -68,7 +68,7 @@ public class _01_hello_world {
 
 s2tha@THALASI MINGW64 /d/Java/java-practices (main)
 
-	$ javac _01_hello_world.java
+	$ javac -Xlint:all _01_hello_world.java
 
 s2tha@THALASI MINGW64 /d/Java/java-practices (main)
 
