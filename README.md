@@ -2,8 +2,8 @@
 
 	“write once, run anywhere.” 
 
-	Java is both compiled and interpreted to balance performance, portability, and security.
-
+	Java is cross-platform programming language. 
+    compiled and interpreted to balance performance, portability, and security.
 
 	How Java Is Compiled and Interpreted
 
