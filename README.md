@@ -285,3 +285,60 @@ It’s written in Java itself and can even be invoked programmatically via the j
 		 151: invokevirtual #17                 // Method java/io/PrintStream.println:(Ljava/lang/String;)V
 		 154: return
 	}
+
+
+###  enforce stricter type checking in project
+
+1. Enable Compiler Warnings
+   
+	Use the -Xlint family of flags during compilation to catch unsafe or unchecked operations:
+	
+		javac -Xlint:unchecked -Xlint:rawtypes -Xlint:cast -Xlint:deprecation YourFile.java
+	
+ 	Or for all warnings:
+	
+		javac -Xlint:all YourFile.java
+
+   configure this in your build tool:
+
+	Maven (pom.xml):
+	
+	xml
+	
+	 	<compilerArgs>
+		  <arg>-Xlint:all</arg>
+		</compilerArgs>
+ 
+	Gradle (build.gradle):
+	
+	groovy
+
+		tasks.withType(JavaCompile) {
+		    options.compilerArgs << "-Xlint:all"
+		}
+
+2. Avoid Raw Types
+
+Always use generics:
+
+	List<String> names = new ArrayList<>(); // ✅
+	List names = new ArrayList();           // ❌ triggers unchecked warning
+
+3. Use @SuppressWarnings Sparingly
+   
+	If you must suppress warnings, be precise:
+
+		@SuppressWarnings("unchecked")
+		List<String> safeCast(Object obj) {
+		    return (List<String>) obj;
+		}
+	Avoid blanket suppression unless absolutely necessary.
+
+4. Use Optional Instead of Nulls
+
+     Avoid null where possible:
+
+		Optional<String> name = Optional.of("Siva");
+
+     This enforces presence checks and avoids NullPointerException.
+
