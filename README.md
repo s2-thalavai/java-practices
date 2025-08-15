@@ -411,3 +411,109 @@ Always use generics:
 		-XX:+UseContainerSupport
  
 	For multi-tenant SaaS, isolate memory profiles per tenant or service.
+
+### What are best practices for GC tuning?
+
+GC tuning is part science, part art — and for someone like you, Sivasankar, who’s architecting resilient, cloud-native systems,
+it’s a powerful lever for optimizing performance, latency, and resource efficiency.
+
+Let’s break down the best practices across different dimensions:
+
+⚙️ 1. Know Your Workload First
+
+	Before tuning, profile your app:
+		
+		Throughput-sensitive: Batch jobs, ETL → prioritize GC efficiency
+		
+		Latency-sensitive: APIs, real-time services → minimize GC pause times
+		
+		Memory-sensitive: Containers, serverless → optimize heap usage
+		
+	Use tools like JFR, VisualVM, or GC logs to understand allocation rates, pause durations, and promotion patterns.
+
+🧠 2. Choose the Right GC Algorithm
+		
+		GC Type				Best For							Notes
+  
+		G1 GC				Balanced workloads					Default in Java 9+, region-based, tunable pause times
+		ZGC					Ultra-low latency, large heaps		Java 11+, concurrent, scalable to TBs
+		Shenandoah			Low-pause, concurrent GC			Red Hat JVM, good for reactive systems
+		Parallel GC			High throughput						Not ideal for latency-sensitive apps
+
+	Use -XX:+UseG1GC, -XX:+UseZGC, etc., based on your JVM version and workload.
+
+3. Tune Heap Sizes Thoughtfully
+
+		-Xms512m -Xmx2048m
+	
+	Set -Xms = -Xmx in production to avoid heap resizing.
+	
+	Ensure -Xmx is below container memory limit in Kubernetes.
+	
+	Use -XX:MaxRAMPercentage in Java 10+ for container-aware sizing.
+
+
+4. Adjust Stack Size for Thread Density
+
+		-Xss256k
+
+	Smaller stack size → more threads, useful in high-concurrency apps.
+	
+	Larger stack size → needed for deep recursion or complex call chains.
+
+
+5. Control GC Pause Times
+	
+		-XX:MaxGCPauseMillis=200
+   
+	G1 GC respects this target (not guaranteed).
+	
+	Helps balance responsiveness vs. throughput.
+
+6. Enable GC Logging for Visibility
+
+		-Xlog:gc*:file=gc.log:time,uptime,level,tags
+	
+	Analyze GC frequency, pause durations, heap usage.
+	
+	Use tools like GCViewer, GCEasy, or JClarity Censum for visualization.
+
+7. Avoid Allocation Pitfalls
+
+		Reuse objects where possible (e.g., buffers, DTOs).
+		
+		Avoid large temporary collections in tight loops.
+		
+		Use WeakReference or SoftReference for caches.
+
+8. Test Under Load
+	
+	Use JMH for microbenchmarking.
+	
+	Simulate real-world traffic with JMeter, Gatling, or Locust.
+	
+	Observe GC behavior under stress — not just in dev environments.
+
+9. Cloud-Native GC Strategy
+
+	In Kubernetes or Azure App Service:
+		
+		Respect memory limits (-Xmx < container memory)
+		
+		Export GC metrics via Prometheus + JMX Exporter
+		
+		Use liveness/readiness probes to detect GC stalls
+
+10. Iterate Based on Metrics
+	
+	GC tuning is not “set and forget.” Monitor:
+	
+		Allocation rate
+		
+		GC pause time
+		
+		Promotion rate
+		
+		Old Gen occupancy
+	
+	Then adjust heap size, GC flags, or even refactor memory-heavy code paths.
