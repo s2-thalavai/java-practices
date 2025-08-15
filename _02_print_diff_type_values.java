@@ -1,6 +1,8 @@
+import java.util.List;
 import java.util.Objects;
-import java.util.Arrays;
 import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.ArrayList;
 
 public class _02_print_diff_type_values {
 
@@ -8,7 +10,7 @@ public class _02_print_diff_type_values {
 
 		// Primitive Data categorys
         int age = 34;
-        double price = 99.99;
+        double price = 99.990;
         char grade = 'A';
         boolean isAvailable = true;
 
@@ -35,83 +37,111 @@ public class _02_print_diff_type_values {
         System.out.println("Numbers: " + Arrays.toString(numbers));
 		
 		// Objects
-		Invoice myInvoice = new Invoice(); 
-		System.out.printf("id: %s, category: %s%n", myInvoice.getLineItem().getId(), myInvoice.getLineItem().getCategory());
-		System.out.println(myInvoice.toString());		
+		LineItem item1 = new LineItem("001", "Laptop", 1, new BigDecimal("75000.00"));
+        LineItem item2 = new LineItem("002", "Mouse", 2, new BigDecimal("499.99"));
 
-		LineItem LineItem = new LineItem("Sindhu Sivasankar Thalavai", "Batsman", 2.0, new BigDecimal("10001"));
-		Invoice invoice = new Invoice(LineItem); 
-		System.out.printf("id: %s, category: %s%n", invoice.getLineItem().getId(), invoice.getLineItem().getCategory());
-		System.out.printf(invoice.toString()); // difference	
+        Invoice myInvoice = new Invoice("INV-1001", Arrays.asList(item1, item2));		
+		System.out.println(myInvoice.toString());		
+		
+		LineItem item3 = new LineItem("003", "Keyboard", 1, new BigDecimal("899.99"));
+		Invoice myInvoice1 = new Invoice("INV-1002", Arrays.asList(item3));
+		System.out.println(myInvoice1);
+
+		LineItem firstItem = myInvoice.getLineItems().get(0);
+		System.out.printf("id: %s, category: %s%n", firstItem.getId(), firstItem.getDescription());
+		
+		List<Invoice> invoiceList = new ArrayList();
+		invoiceList.add(myInvoice);
+		invoiceList.add(myInvoice1);
+		
+		invoiceList.forEach(System.out::println);
+
+		BigDecimal grandTotal = invoiceList.stream()
+			.flatMap(invoice -> invoice.getLineItems().stream())
+			.map(LineItem::getTotalPrice)
+			.reduce(BigDecimal.ZERO, BigDecimal::add);
+
+		System.out.println("Grand Total Across All Invoices: " + grandTotal);
+
 	}
 }
 
 class Invoice {
 
-	// Immutability: LineItem fields final to ensure thread safety and predictability
-    private final LineItem LineItem;
+    private final String invoiceId;
+    private final List<LineItem> lineItems;
 
-    public Invoice() {
-        this.LineItem = new LineItem("Default", "Unknown", 0.0, new BigDecimal("0"));
+    public Invoice(String invoiceId, List<LineItem> lineItems) {
+        this.invoiceId = Objects.requireNonNull(invoiceId, "invoiceId cannot be null");
+        this.lineItems = Objects.requireNonNull(lineItems, "lineItems cannot be null");
     }
 
-    public Invoice(LineItem LineItem) {
-		// Null Safety: Add Objects.requireNonNull() to constructors
-        this.LineItem = Objects.requireNonNull(LineItem, "LineItem cannot be null");
+    public String getInvoiceId() {
+        return invoiceId;
     }
 
-    public LineItem getLineItem() {
-        return LineItem;
+    public List<LineItem> getLineItems() {
+        return lineItems;
+    }
+
+    public BigDecimal getTotalAmount() {
+        return lineItems.stream()
+                    .map(LineItem::getTotalPrice)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     @Override
     public String toString() {
-        return String.format("Invoice{LineItem=%s}", LineItem);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Invoice{id='").append(invoiceId).append("', total=").append(getTotalAmount()).append("}\n");
+        for (LineItem item : lineItems) {
+            sb.append("  ").append(item).append("\n");
+        }
+        return sb.toString();
     }
 }
-
 
 class LineItem {
 
     private final String id;
-    private final String category;
-    private final Double quantity;
+    private final String description;
+    private final int quantity;
     private final BigDecimal unitPrice;
 
-    public LineItem(String id, String category, Double quantity, BigDecimal unitPrice) {
-		// Null Safety: Add Objects.requireNonNull() to constructors
+    public LineItem(String id, String description, int quantity, BigDecimal unitPrice) {
         this.id = Objects.requireNonNull(id, "id cannot be null");
-        this.category = Objects.requireNonNull(category, "category cannot be null");
+        this.description = Objects.requireNonNull(description, "description cannot be null");
         this.quantity = quantity;
-        this.unitPrice = unitPrice;
-    }	
- 
+        this.unitPrice = Objects.requireNonNull(unitPrice, "unitPrice cannot be null");
+    }
+
     public String getId() {
-		if(id.length()>16)
-			return "id is too large!";
-		else
-			return id;
+        return id;
     }
 
-    public String getCategory() {
-        return category;
+    public String getDescription() {
+        return description;
     }
 
-    public Double getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
     public BigDecimal getUnitPrice() {
         return unitPrice;
     }
-	
-	@Override
-	public String toString() {
-		return String.format("LineItem{id='%s', category='%s', quantity=%.2f, unitPrice=%s}",
-							 id, category, quantity, unitPrice.toPlainString());
-	}
 
+    public BigDecimal getTotalPrice() {
+        return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    @Override
+    public String toString() {
+        return String.format("LineItem{id='%s', description='%s', quantity=%d, unitPrice=%s, total=%s}",
+                id, description, quantity, unitPrice.toPlainString(), getTotalPrice().toPlainString());
+    }
 }
+
 
 
 /*
@@ -126,17 +156,19 @@ s2tha@THALASI MINGW64 /d/Java/java-practices (main)
 	
 	Age: 34
 	Price: 99.99
-	Grade: A
-	Available: true
+	Grade: AAvailable: true
 	Count: 100
 	Temperature: 36.6
 	Message: Hello, Java!
 	Unknown
 	Numbers: [1, 2, 3, 4]
-	id: Default, category: Unknown
-	Invoice{LineItem=LineItem{id='Default', category='Unknown', quantity=0, unitPrice=0}}
-	id: Siva, category: Batsman
-	Invoice{LineItem=LineItem{id='Siva', category='Batsman', quantity=2, unitPrice=10001}}
+	Invoice{id='INV-1001', total=75999.98}
+	  LineItem{id='001', description='Laptop', quantity=1, unitPrice=75000.00, total=75000.00}
+	  LineItem{id='002', description='Mouse', quantity=2, unitPrice=499.99, total=999.98}
+
+	id: 003, category: Keyboard
+	Invoice{id='INV-1002', total=899.99}
+	LineItem{id='003', description='Keyboard', quantity=1, unitPrice=899.99, total=899.99}
 		
 s2tha@THALASI MINGW64 /d/Java/java-practices (main)
 
