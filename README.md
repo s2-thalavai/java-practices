@@ -369,11 +369,35 @@ Always use generics:
 			Use G1GC for balanced throughput and pause times.
 			Monitor GC logs to adjust heap size based on allocation rate and GC frequency.
 	
-	###  Example for a Spring Boot microservice:
+	    Example for a Spring Boot microservice:
 	
 			java -Xms1024m -Xmx2048m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+PrintGCDetails 
 
 
- 
+🧵 Stack Memory Tuning
+	 
+	Key Flag:
+	
+		-Xss512k         # Stack size per thread (default ~1MB)
+	
+	When to Tune:
+		
+		Reduce -Xss to allow more threads in memory-constrained environments.
+		
+		Increase -Xss if you encounter StackOverflowError due to deep recursion.
+	
+	Example:
+	
+		java -Xss256k -Xmx1024m -jar app.jar
+	 
+	⚠️ Be cautious: too small a stack can cause StackOverflowError; too large reduces max thread count.
 
- 
+
+📊 Monitoring & Profiling Tools
+		
+		VisualVM, JFR, JConsole for live heap and thread analysis
+		
+		Prometheus + Grafana for containerized JVM metrics
+		
+		GC logs for tuning GC behavior and heap sizing	
+		 
