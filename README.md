@@ -332,5 +332,13 @@ Always use generics:
 		List<String> safeCast(Object obj) {
 		    return (List<String>) obj;
 		}
+	Avoid blanket suppression unless absolutely necessary.
 
-Avoid blanket suppression unless absolutely necessary.
+4. Use Optional Instead of Nulls
+
+     Avoid null where possible:
+
+		Optional<String> name = Optional.of("Siva");
+
+     This enforces presence checks and avoids NullPointerException.
+
