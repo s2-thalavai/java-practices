@@ -51,7 +51,6 @@ class Team {
         this.member = member;
     }
 	
-	@Override
 	public String toString() {
 		return "Team{member=" + member + "}";
 	}
@@ -82,7 +81,6 @@ class Member {
         return type;
     }
 
-	@Override
     public String toString() {
         return "Member{name='" + name + "', type=" + type + "}";
     }
