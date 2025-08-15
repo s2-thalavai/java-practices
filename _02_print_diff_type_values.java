@@ -31,6 +31,10 @@ public class _02_print_diff_type_values {
         System.out.println("Numbers: " + Arrays.toString(numbers));
 		
 		// Objects
+		Team myTeam = new Team(); 
+		System.out.printf("Name: %s, Type: %s%n", myTeam.member.getName(), myTeam.member.getType());
+		System.out.println(myTeam.toString());		
+
 		Member member = new Member("Siva", "Batsman", 2, 10001);
 		Team team = new Team(member); 
 		System.out.printf("Name: %s, Type: %s%n", team.member.getName(), team.member.getType());
