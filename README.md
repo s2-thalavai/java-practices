@@ -566,3 +566,94 @@ Let’s break down the best practices across different dimensions:
 		Old Gen occupancy
 	
 	Then adjust heap size, GC flags, or even refactor memory-heavy code paths.
+
+
+## To identify which Garbage Collector (GC) your JVM is currently using, you can use one of the following methods depending on your environment:
+
+🧪 1. Print JVM Flags at Runtime
+
+	Run this command in your terminal:
+	
+		java -XX:+PrintFlagsFinal -version | grep Use
+
+This will show which GC flags are enabled. Look for one of these:
+
+		UseG1GC → G1 Garbage Collector
+		
+		UseZGC → Z Garbage Collector
+		
+		UseShenandoahGC → Shenandoah
+		
+		UseParallelGC → Parallel GC
+		
+		UseSerialGC → Serial GC
+
+If a flag shows true, that GC is active.
+
+  <img width="1918" height="1021" alt="image" src="https://github.com/user-attachments/assets/eabe633c-2a31-4f64-8e4e-fdf9d4a8f3bb" />
+
+  
+4. Inside a Docker Container
+   
+	If your app runs in a container, you can inspect the GC with:
+
+		docker exec -it <container_id> java -XX:+PrintFlagsFinal -version | grep Use
+
+1. Local Development or CLI Launch
+   
+		If you're running your app manually:
+		
+			java -XX:+PrintGCDetails -Xloggc:gc.log -jar your-app.jar
+   
+		You can also export it for reuse:
+		
+			export JAVA_OPTS="-XX:+PrintGCDetails -Xloggc:gc.log"
+			java $JAVA_OPTS -jar your-app.jar
+
+ 2. Dockerized Microservice
+		 
+		In your Dockerfile, add:
+		
+		dockerfile
+		
+			ENV JAVA_TOOL_OPTIONS="-XX:+PrintGCDetails -Xloggc:/app/logs/gc.log"
+		
+		Make sure /app/logs exists and is writable. You can mount a volume to persist logs.
+
+3. Kubernetes Deployment
+   
+		In your container spec (Deployment.yaml or Helm chart):
+		
+		yaml
+		
+			containers:
+			  - name: your-app
+			    image: your-image
+			    env:
+			      - name: JAVA_TOOL_OPTIONS
+			        value: "-XX:+PrintGCDetails -Xloggc:/app/logs/gc.log"
+			        
+		Again, ensure the log path is writable and mounted if needed.
+
+4. Systemd Service (Linux VM)
+	   
+	In your service file (/etc/systemd/system/your-app.service):
+	
+		ini
+	
+		[Service]
+		Environment="JAVA_OPTS=-XX:+PrintGCDetails -Xloggc=/var/log/your-app/gc.log"
+		ExecStart=/usr/bin/java $JAVA_OPTS -jar /opt/your-app.jar
+
+	Then reload and restart:
+	
+		sudo systemctl daemon-reexec
+		sudo systemctl restart your-app
+
+🧪 Bonus: Rotate GC Logs
+
+GC logs can grow large. Consider adding log rotation:
+
+		-XX:+UseGCLogFileRotation \
+		-XX:NumberOfGCLogFiles=5 \
+		-XX:GCLogFileSize=10M
