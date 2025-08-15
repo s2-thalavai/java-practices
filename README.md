@@ -669,3 +669,86 @@ GC logs can grow large. Consider adding log rotation:
 	🔹 AWS Elastic Beanstalk / ECS
 	
 			Use .ebextensions or container definitions to inject GC flags into the JVM startup.
+
+## Format Specifier
+
+	Basic Syntax
+	
+		System.out.printf(formatString, arguments);
+
+	Format Specifier Anatomy
+	
+	Each format specifier follows this general structure:
+	
+	Code
+
+		%[flags][width][.precision]conversion
+
+	Let’s decode each part:
+
+		%: Starts the format specifier.
+		
+		Flags: Modify output formatting (-, +, 0, ,, etc.).
+		
+		Width: Minimum number of characters to output.
+		
+		Precision: For floating-point numbers, controls decimal places.
+		
+		Conversion: The type of data (d, f, s, etc.).
+
+
+🔣 Common Format Specifiers
+		
+		Specifier			Description	Example 		Output
+		%d					Decimal integer				42
+		%f					Floating-point number		3.14
+		%s					String						"Hello"
+		%c					Character					'A'
+		%b					Boolean						true or false
+		%n					Newline						(line break)
+		%%					Literal percent sign		%
+
+🧪 Examples
+		
+		System.out.printf("Hello %s!%n", "World");           // Hello World!
+		System.out.printf("Pi: %.2f%n", Math.PI);            // Pi: 3.14
+		System.out.printf("Hex: %x%n", 255);                 // Hex: ff
+		System.out.printf("Boolean: %b%n", true);            // Boolean: true
+		System.out.printf("Padded: %5d%n", 42);              // Padded:    42
+
+Common Conversion Characters
+
+		Specifier		Type			Example Value		Output Example
+		
+		%d				Integer			42					42
+		%f				Floating-point	3.14159				3.14 (with .2f)
+		%s				String			"Java"				Java
+		%c				Character		'A'					A
+		%b				Boolean			true				true
+		%x				Hexadecimal		255					ff
+		%n				Line separator	—					(newline)
+		%%				Literal %		—					%
+
+🛠️ Flags in Action
+
+	Flag			Meaning						Example
+	-		Left-align within width				%-10s → "Java "
+	+		Show sign for numeric values		%+d → +42
+	0		Pad with zeros						%05d → 00042
+	,		Group digits with commas			%,d → 1,000,000
+	(		Enclose negative numbers in ()		%(d → (42)
+ 
+🎯 Precision Control
+	
+	For floats: %.2f → rounds to 2 decimal places.
+	
+	For strings: %.5s → truncates to 5 characters.
+
+		
+	System.out.printf("Pi: %.3f%n", Math.PI); // Pi: 3.142
+	System.out.printf("Name: %.4s%n", "Sivasankar"); // Name: Siva
+
+Combining It All
+
+	System.out.printf("Total: %,+10.2f%n", 1234567.891); // Total:  1,234,567.89
+	System.out.printf("User: %-15s Score: %+05d%n", "Siva", 42); // User: Siva          
