@@ -184,7 +184,12 @@ import java.util.ArrayList;
 public class _03_stack_and_heap_memory {	
 	
 	 public static void main(String[] args) {
-		        
+		
+		Runtime runtime = Runtime.getRuntime();
+		System.out.println("Max Heap: " + runtime.maxMemory() / (1024 * 1024) + " MB");
+		System.out.println("Initial Heap: " + runtime.totalMemory() / (1024 * 1024) + " MB");
+		System.out.println("Free Heap: " + runtime.freeMemory() / (1024 * 1024) + " MB");
+
 		Product product = new Product("Laptop", 75000.00); // product reference → stored in stack, new Product("Laptop", 75000) → object stored in heap 
 		System.out.println("product: " + product);
 		
@@ -223,3 +228,89 @@ class Product {
                 name, price);    // runtime
     }
 }
+
+
+/*
+
+Output:
+
+s2tha@THALASI MINGW64 /d/Java/java-practices (main)
+
+	$ java -XX:+PrintFlagsFinal -version | grep -i stack
+
+     intx C1InlineStackLimit                       = 5                                      {C1 product} {default}
+     intx CompilerThreadStackSize                  = 0                                      {pd product} {default}
+    uintx GCDrainStackTargetSize                   = 64                                        {product} {ergonomic}
+     bool JavaMonitorsInStackTrace                 = true                                      {product} {default}
+	 
+	 
+   size_t MarkStackSize                            = 4194304                                   {product} {ergonomic}
+   size_t MarkStackSizeMax                         = 536870912                                 {product} {default}
+   
+   
+     intx MaxJavaStackTraceDepth                   = 1024                                      {product} {default}
+     bool OmitStackTraceInFastThrow                = true                                      {product} {default}
+     intx OnStackReplacePercentage                 = 140                                    {pd product} {default}
+     bool RestrictReservedStack                    = true                                      {product} {default}
+     intx StackRedPages                            = 1                                      {pd product} {default}
+     intx StackReservedPages                       = 0                                      {pd product} {default}
+     intx StackShadowPages                         = 8                                      {pd product} {default}
+     bool StackTraceInThrowable                    = true                                      {product} {default}
+     intx StackYellowPages                         = 3                                      {pd product} {default}
+     intx ThreadStackSize                          = 0                                      {pd product} {default}
+     bool UseOnStackReplacement                    = true                                   {pd product} {default}
+     intx VMThreadStackSize                        = 0                                      {pd product} {default}
+   size_t ZMarkStackSpaceLimit                     = 8589934592                                {product} {default}
+   
+java version "21.0.8" 2025-07-15 LTS
+Java(TM) SE Runtime Environment Oracle GraalVM 21.0.8+12.1 (build 21.0.8+12-LTS-jvmci-23.1-b72)
+Java HotSpot(TM) 64-Bit Server VM Oracle GraalVM 21.0.8+12.1 (build 21.0.8+12-LTS-jvmci-23.1-b72, mixed mode, sharing)
+
+s2tha@THALASI MINGW64 /d/Java/java-practices (main)
+
+	$ javac -Xlint:all _03_stack_and_heap_memory.java
+
+s2tha@THALASI MINGW64 /d/Java/java-practices (main)
+
+	$ java _03_stack_and_heap_memory
+	
+	Max Heap: 4028 MB
+	Initial Heap: 252 MB
+	Free Heap: 248 MB
+	
+	product: Product{name='Laptop', price='75000.00'}
+	productName: Laptop
+	Discount applied to product Laptop is : 10.0
+
+s2tha@THALASI MINGW64 /d/Java/java-practices (main)
+
+
+1. Print JVM Memory Settings at Runtime
+
+🔹 Heap Size
+
+	Runtime runtime = Runtime.getRuntime();
+	System.out.println("Max Heap: " + runtime.maxMemory() / (1024 * 1024) + " MB");
+	System.out.println("Initial Heap: " + runtime.totalMemory() / (1024 * 1024) + " MB");
+	System.out.println("Free Heap: " + runtime.freeMemory() / (1024 * 1024) + " MB");
+
+🔹 Stack Size
+
+	Stack size is per thread and not accessible via Runtime, but you can print it using:
+
+		java -XX:+PrintFlagsFinal -version | grep -i stack
+
+Look for:
+
+Code
+
+		size_t  ThreadStackSize                  1024        // in KB
+   
+Or use:
+
+		java -Xss512k -version
+	
+to explicitly set and confirm it.
+
+
+*/
