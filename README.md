@@ -488,11 +488,11 @@ Let’s break down the best practices across different dimensions:
 
 8. Test Under Load
 	
-	Use JMH for microbenchmarking.
-	
-	Simulate real-world traffic with JMeter, Gatling, or Locust.
-	
-	Observe GC behavior under stress — not just in dev environments.
+		Use JMH for microbenchmarking.
+		
+		Simulate real-world traffic with JMeter, Gatling, or Locust.
+		
+		Observe GC behavior under stress — not just in dev environments.
 
 9. Cloud-Native GC Strategy
 
