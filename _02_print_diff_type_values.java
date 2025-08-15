@@ -1,3 +1,4 @@
+import java.util.Objects;
 import java.util.Arrays;
 
 public class _02_print_diff_type_values {
@@ -25,6 +26,8 @@ public class _02_print_diff_type_values {
 		// Strings
         String message = "Hello, Java!";
         System.out.println("Message: " + message);
+		message = null;
+		System.out.println(Objects.toString(message, "Unknown"));  // prints "Unknown"
 
 		// Arrays
         int[] numbers = {1, 2, 3, 4};
@@ -32,63 +35,80 @@ public class _02_print_diff_type_values {
 		
 		// Objects
 		Team myTeam = new Team(); 
-		System.out.printf("Name: %s, Type: %s%n", myTeam.member.getName(), myTeam.member.getType());
+		System.out.printf("Name: %s, Type: %s%n", myTeam.getMember().getName(), myTeam.getMember().getType());
 		System.out.println(myTeam.toString());		
 
 		Member member = new Member("Siva", "Batsman", 2, 10001);
 		Team team = new Team(member); 
-		System.out.printf("Name: %s, Type: %s%n", team.member.getName(), team.member.getType());
-		System.out.printf(team.toString());		
+		System.out.printf("Name: %s, Type: %s%n", team.getMember().getName(), team.getMember().getType());
+		System.out.printf(team.toString());	
+		
 
     }
 }
 
 class Team {
-	
-    Member member;
 
-    Team() {
+	// Immutability: Member fields final to ensure thread safety and predictability
+    private final Member member;
+
+    public Team() {
         this.member = new Member("Default", "Unknown", 0, 0);
     }
 
-    Team(Member member) {
-        this.member = member;
+    public Team(Member member) {
+		// Null Safety: Add Objects.requireNonNull() to constructors
+        this.member = Objects.requireNonNull(member, "Member cannot be null");
     }
-	
-	public String toString() {
-		return "Team{member=" + member + "}";
-	}
 
+    public Member getMember() {
+        return member;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Team{member=%s}", member);
+    }
 }
 
 
 class Member {
-	
-    private String name;
-    private String type;
-    private int level;
-    private int rank;
 
-    Member(String name, String type, int level, int rank) {
-        this.name = name;
-        this.type = type;
+    private final String name;
+    private final String type;
+    private final int level;
+    private final int rank;
+
+    public Member(String name, String type, int level, int rank) {
+		// Null Safety: Add Objects.requireNonNull() to constructors
+        this.name = Objects.requireNonNull(name, "Name cannot be null");
+        this.type = Objects.requireNonNull(type, "Type cannot be null");
         this.level = level;
         this.rank = rank;
     }
 
-	// Accessing Private Fields throough getter
-    String getName() {
+    public String getName() {
         return name;
     }
 
-    String getType() {
+    public String getType() {
         return type;
     }
 
+    public int getLevel() {
+        return level;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    @Override
     public String toString() {
-        return "Member{name='" + name + "', type=" + type + "}";
+        return String.format("Member{name='%s', type='%s', level=%d, rank=%d}", name, type, level, rank);
     }
 }
+
 
 /*
 
