@@ -657,3 +657,15 @@ GC logs can grow large. Consider adding log rotation:
 		-XX:+UseGCLogFileRotation \
 		-XX:NumberOfGCLogFiles=5 \
 		-XX:GCLogFileSize=10M
+  
+4. Set GC in Cloud Platforms
+
+	🔹 Azure App Service
+			
+			Go to Configuration > Application Settings
+			
+			Add: JAVA_OPTS = -XX:+UseG1GC -XX:MaxGCPauseMillis=200
+	
+	🔹 AWS Elastic Beanstalk / ECS
+	
+			Use .ebextensions or container definitions to inject GC flags into the JVM startup.
