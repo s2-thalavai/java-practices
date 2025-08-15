@@ -401,3 +401,13 @@ Always use generics:
 		
 		GC logs for tuning GC behavior and heap sizing	
 		 
+
+🧠 Real-World Tips
+
+	In Kubernetes, set -Xmx below container memory limit to avoid OOM kills.
+	
+	Use container-aware flags in Java 10+:
+	
+		-XX:+UseContainerSupport
+ 
+	For multi-tenant SaaS, isolate memory profiles per tenant or service.
