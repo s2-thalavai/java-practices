@@ -127,10 +127,13 @@ s2tha@THALASI MINGW64 /d/Java/java-practices (main)
 	Count: 100
 	Temperature: 36.6
 	Message: Hello, Java!
+	Unknown
 	Numbers: [1, 2, 3, 4]
+	Name: Default, Type: Unknown
+	Team{member=Member{name='Default', type='Unknown', level=0, rank=0}}
 	Name: Siva, Type: Batsman
-	Team{member=Member{name='Siva', type=Batsman}}
-	
+	Team{member=Member{name='Siva', type='Batsman', level=2, rank=10001}}
+		
 s2tha@THALASI MINGW64 /d/Java/java-practices (main)
 
 
