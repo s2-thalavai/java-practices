@@ -342,3 +342,38 @@ Always use generics:
 
      This enforces presence checks and avoids NullPointerException.
 
+
+## Stack and Heap memory tuning in java
+
+🧠 JVM Memory Overview
+		
+		Memory Area			Purpose										Tunable?
+		
+		Heap				Stores objects and class instances			✅ Yes
+		Stack				Stores method frames and local variables	✅ Yes
+		Metaspace			Stores class metadata (Java 8+)				✅ Yes
+		Code Cache			Stores compiled bytecode					✅ Yes
+
+🔧 Heap Memory Tuning
+
+	Key Flags:
+	
+		-Xms512m         # Initial heap size
+		-Xmx2048m        # Maximum heap size
+		-XX:+UseG1GC     # Use G1 Garbage Collector
+		-XX:MaxGCPauseMillis=200  # Target GC pause time
+
+	Strategy:
+
+		Set -Xms = -Xmx for predictable performance in production.
+		Use G1GC for balanced throughput and pause times.
+		Monitor GC logs to adjust heap size based on allocation rate and GC frequency.
+
+###  Example for a Spring Boot microservice:
+
+		java -Xms1024m -Xmx2048m -XX:+UseG1GC -XX:MaxGCPauseMillis=200 -XX:+PrintGCDetails 
+
+
+ 
+
+ 
